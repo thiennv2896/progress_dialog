@@ -115,7 +115,9 @@ class ProgressDialog {
     try {
       if (_isShowing) {
         _isShowing = false;
-        Navigator.of(_dismissingContext).pop();
+        if (Navigator.of(_dismissingContext).canPop()) {
+          Navigator.of(_dismissingContext).pop();
+        }
         if (_showLogs) debugPrint('ProgressDialog dismissed');
         return Future.value(true);
       } else {
