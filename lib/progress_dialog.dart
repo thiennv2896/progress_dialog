@@ -28,6 +28,7 @@ double _dialogElevation = 8.0, _borderRadius = 8.0;
 Color _backgroundColor = Colors.white;
 Curve _insetAnimCurve = Curves.easeInOut;
 EdgeInsets _dialogPadding = const EdgeInsets.all(8.0);
+double _maxWidth = double.infinity;
 
 Widget _progressWidget = Image.asset(
   'assets/double_ring_loading_io.gif',
@@ -65,12 +66,12 @@ class ProgressDialog {
       double borderRadius,
       Curve insetAnimCurve,
       EdgeInsets padding,
-      Alignment progressWidgetAlignment}) {
+      Alignment progressWidgetAlignment,
+      double maxWidth}) {
     if (_isShowing) return;
     if (_progressDialogType == ProgressDialogType.Download) {
       _progress = progress ?? _progress;
     }
-
     _dialogMessage = message ?? _dialogMessage;
     _maxProgress = maxProgress ?? _maxProgress;
     _progressWidget = progressWidget ?? _progressWidget;
@@ -85,6 +86,7 @@ class ProgressDialog {
     _dialogPadding = padding ?? _dialogPadding;
     _progressWidgetAlignment =
         progressWidgetAlignment ?? _progressWidgetAlignment;
+    _maxWidth = maxWidth ?? _maxWidth;
   }
 
   void update(
@@ -249,23 +251,26 @@ class _BodyState extends State<_Body> {
     );
 
     return _customBody ??
-        Container(
-          padding: _dialogPadding,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              // row body
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const SizedBox(width: 8.0),
-                  _direction == TextDirection.ltr ? loader : text,
-                  const SizedBox(width: 8.0),
-                  _direction == TextDirection.rtl ? loader : text,
-                  const SizedBox(width: 8.0)
-                ],
-              ),
-            ],
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: _maxWidth),
+          child: Container(
+            padding: _dialogPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                // row body
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(width: 8.0),
+                    _direction == TextDirection.ltr ? loader : text,
+                    const SizedBox(width: 8.0),
+                    _direction == TextDirection.rtl ? loader : text,
+                    const SizedBox(width: 8.0)
+                  ],
+                ),
+              ],
+            ),
           ),
         );
   }
