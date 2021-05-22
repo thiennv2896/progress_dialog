@@ -4,7 +4,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 //import '../../lib/progress_dialog.dart';
 
-ProgressDialog pr;
+ProgressDialog? pr;
 
 void main() {
   runApp(MaterialApp(
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 //      ),
     );
 
-    pr.style(
+    pr?.style(
 //      message: 'Downloading file...',
       message:
           'Lets dump some huge text into the progress dialog and check whether it can handle the huge text. If it works then not you or me, flutter is awesome',
@@ -59,13 +59,13 @@ class MyApp extends StatelessWidget {
             ),
             color: Colors.blue,
             onPressed: () async {
-              await pr.show();
+              await pr?.show();
 
               Future.delayed(Duration(seconds: 2)).then((onvalue) {
                 percentage = percentage + 30.0;
                 print(percentage);
 
-                pr.update(
+                pr?.update(
                   progress: percentage,
                   message: "Please wait...",
                   progressWidget: Container(
@@ -84,17 +84,17 @@ class MyApp extends StatelessWidget {
 
                 Future.delayed(Duration(seconds: 2)).then((value) {
                   percentage = percentage + 30.0;
-                  pr.update(
+                  pr?.update(
                       progress: percentage, message: "Few more seconds...");
                   print(percentage);
                   Future.delayed(Duration(seconds: 2)).then((value) {
                     percentage = percentage + 30.0;
-                    pr.update(progress: percentage, message: "Almost done...");
+                    pr?.update(progress: percentage, message: "Almost done...");
                     print(percentage);
 
                     Future.delayed(Duration(seconds: 2)).then((value) {
-                      pr.hide().whenComplete(() {
-                        print(pr.isShowing());
+                      pr?.hide().whenComplete(() {
+                        print(pr?.isShowing());
                       });
                       percentage = 0.0;
                     });
@@ -103,12 +103,12 @@ class MyApp extends StatelessWidget {
               });
 
               Future.delayed(Duration(seconds: 10)).then((onValue) {
-                print("PR status  ${pr.isShowing()}");
-                if (pr.isShowing())
-                  pr.hide().then((isHidden) {
+                print("PR status  ${pr?.isShowing()}");
+                if (pr?.isShowing() ?? true)
+                  pr?.hide().then((isHidden) {
                     print(isHidden);
                   });
-                print("PR status  ${pr.isShowing()}");
+                print("PR status  ${pr?.isShowing()}");
               });
             }),
       ),
@@ -122,12 +122,12 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  ProgressDialog pr;
+  ProgressDialog? pr;
 
   @override
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context, showLogs: true);
-    pr.style(message: 'Please wait...');
+    pr?.style(message: 'Please wait...');
 
     return Scaffold(
       body: Center(
@@ -136,9 +136,9 @@ class _FirstScreenState extends State<FirstScreen> {
               style: TextStyle(color: Colors.white)),
           color: Colors.blueAccent,
           onPressed: () {
-            pr.show();
+            pr?.show();
             Future.delayed(Duration(seconds: 3)).then((value) {
-              pr.hide().whenComplete(() {
+              pr?.hide().whenComplete(() {
                 Navigator.of(context).push(CupertinoPageRoute(
                     builder: (BuildContext context) => SecondScreen()));
               });

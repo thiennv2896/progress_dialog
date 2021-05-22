@@ -7,7 +7,7 @@ enum ProgressDialogType { Normal, Download }
 String _dialogMessage = "Loading...";
 double _progress = 0.0, _maxProgress = 100.0;
 
-Widget _customBody;
+Widget? _customBody;
 
 TextAlign _textAlign = TextAlign.left;
 Alignment _progressWidgetAlignment = Alignment.centerLeft;
@@ -15,8 +15,8 @@ Alignment _progressWidgetAlignment = Alignment.centerLeft;
 TextDirection _direction = TextDirection.ltr;
 
 bool _isShowing = false;
-BuildContext _context, _dismissingContext;
-ProgressDialogType _progressDialogType;
+BuildContext? _context, _dismissingContext;
+ProgressDialogType? _progressDialogType;
 bool _barrierDismissible = true, _showLogs = false;
 
 TextStyle _progressTextStyle = TextStyle(
@@ -36,14 +36,14 @@ Widget _progressWidget = Image.asset(
 );
 
 class ProgressDialog {
-  _Body _dialog;
+  _Body? _dialog;
 
   ProgressDialog(BuildContext context,
-      {ProgressDialogType type,
-        bool isDismissible,
-        bool showLogs,
-        TextDirection textDirection,
-        Widget customBody}) {
+      {ProgressDialogType? type,
+        bool? isDismissible,
+        bool? showLogs,
+        TextDirection? textDirection,
+        Widget? customBody}) {
     _context = context;
     _progressDialogType = type ?? ProgressDialogType.Normal;
     _barrierDismissible = isDismissible ?? true;
@@ -53,21 +53,21 @@ class ProgressDialog {
   }
 
   void style(
-      {Widget child,
-      double progress,
-      double maxProgress,
-      String message,
-      Widget progressWidget,
-      Color backgroundColor,
-      TextStyle progressTextStyle,
-      TextStyle messageTextStyle,
-      double elevation,
-      TextAlign textAlign,
-      double borderRadius,
-      Curve insetAnimCurve,
-      EdgeInsets padding,
-      Alignment progressWidgetAlignment,
-      double maxWidth}) {
+      {Widget? child,
+      double? progress,
+      double? maxProgress,
+      String? message,
+      Widget? progressWidget,
+      Color? backgroundColor,
+      TextStyle? progressTextStyle,
+      TextStyle? messageTextStyle,
+      double? elevation,
+      TextAlign? textAlign,
+      double? borderRadius,
+      Curve? insetAnimCurve,
+      EdgeInsets? padding,
+      Alignment? progressWidgetAlignment,
+      double? maxWidth}) {
     if (_isShowing) return;
     if (_progressDialogType == ProgressDialogType.Download) {
       _progress = progress ?? _progress;
@@ -90,12 +90,12 @@ class ProgressDialog {
   }
 
   void update(
-      {double progress,
-      double maxProgress,
-      String message,
-      Widget progressWidget,
-      TextStyle progressTextStyle,
-      TextStyle messageTextStyle}) {
+      {double? progress,
+      double? maxProgress,
+      String? message,
+      Widget? progressWidget,
+      TextStyle? progressTextStyle,
+      TextStyle? messageTextStyle}) {
     if (_progressDialogType == ProgressDialogType.Download) {
       _progress = progress ?? _progress;
     }
@@ -106,7 +106,7 @@ class ProgressDialog {
     _messageStyle = messageTextStyle ?? _messageStyle;
     _progressTextStyle = progressTextStyle ?? _progressTextStyle;
 
-    if (_isShowing) _dialog.update();
+    if (_isShowing) _dialog?.update();
   }
 
   bool isShowing() {
@@ -117,8 +117,8 @@ class ProgressDialog {
     try {
       if (_isShowing) {
         _isShowing = false;
-        if (Navigator.of(_dismissingContext).canPop()) {
-          Navigator.of(_dismissingContext).pop();
+        if (Navigator.of(_dismissingContext!).canPop()) {
+          Navigator.of(_dismissingContext!).pop();
         }
         if (_showLogs) debugPrint('ProgressDialog dismissed');
         return Future.value(true);
@@ -138,7 +138,7 @@ class ProgressDialog {
       if (!_isShowing) {
         _dialog = new _Body();
         showDialog<dynamic>(
-          context: _context,
+          context: _context!,
           barrierDismissible: _barrierDismissible,
           builder: (BuildContext context) {
             _dismissingContext = context;
